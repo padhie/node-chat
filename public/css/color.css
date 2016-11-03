@@ -1,0 +1,75 @@
+/* GREEN */
+body.green header, 
+body.green footer {
+	background-color: #8BC84B;
+	color: #fff;
+}
+
+body.green .loginInput {
+	background-color: #8BC84B;
+    color: white;
+}
+
+
+/* VIOLET */
+body.violet header, 
+body.violet footer {
+	background-color: #90025E;
+	color: #fff;
+}
+
+body.violet .loginInput {
+	background-color: #90025E;
+    color: white;
+}
+
+
+/* RED */
+body.red header, 
+body.red footer {
+	background-color: #af1717;
+	color: #fff;
+}
+
+body.red .loginInput {
+	background-color: #af1717;
+    color: white;
+}
+
+
+/* ORANGE */
+body.orange header, 
+body.orange footer {
+	background-color: #c58e12;
+	color: #fff;
+}
+
+body.orange .loginInput {
+	background-color: #c58e12;
+    color: white;
+}
+
+
+/* BLAU */
+body.blue header, 
+body.blue footer {
+	background-color: #1218ce;
+	color: #fff;
+}
+
+body.blue .loginInput {
+	background-color: #1218ce;
+    color: white;
+}
+
+/* SCHWARZ */
+body.black header, 
+body.black footer {
+	background-color: #000;
+	color: #fff;
+}
+
+body.black .loginInput {
+	background-color: #000;
+    color: white;
+}
