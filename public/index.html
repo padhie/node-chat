@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Node.js Chat</title>
+		<meta charset="utf-8">
+		<link rel="stylesheet" href="css/style.css" />
+		<link rel="stylesheet" href="css/color.css" />
+		<script src="socket.io/socket.io.js"></script>
+		<script src="js/jquery.min.js"></script>
+		<script src="js/client.js"></script>
+		<script src="js/notification.js"></script>
+		<script src="js/color.js"></script>
+		<script src="js/cookie.js"></script>
+
+		<script type="text/javascript">
+			$(document).ready(function() {
+				$("#loginBtn").on("click", function() {
+					login();
+				});
+				$("#logoutBtn").on("click", function() {
+					logout();
+				});
+				$('#name').keypress(function (e) {
+					if (e.which == 13) {
+						login();
+					}
+				});
+
+				if (hasCookie("username")) {
+					$("input#name").val( getCookie("username"));
+					login();
+				}
+			});
+		</script>
+	</head>
+	<body class="violet">
+		<header>
+			<div class="title">Node.js Chat</div>
+			<div class="color">
+				<span class="collorBtn" style="background-color:#8BC84B;" data-color="green">G</span>
+				<span class="collorBtn" style="background-color:#90025E;" data-color="violet">V</span>
+				<span class="collorBtn" style="background-color:#af1717;" data-color="red">R</span>
+				<span class="collorBtn" style="background-color:#c58e12;" data-color="orange">O</span>
+				<span class="collorBtn" style="background-color:#1218ce;" data-color="blue">B</span>
+				<span class="collorBtn" style="background-color:#000;" data-color="black">D</span>
+				<button id="logoutBtn">logout</button>
+			</div>
+		</header>
+		<ul id="content"></ul>
+		<footer>
+			<div class="input">
+				<input id="text" type="text" placeholder="schreibe etwas..." />
+				<input id="senden" type="submit" class="btn" value="senden" />
+			</div>
+			<div class="links">
+				powerd by <a href="http://nodecode.de/">NodeCode</a> |
+				modified by <a href="http://padhie.de/">Padhie</a>
+			</div>
+		</footer>
+		<div class="login">
+			<div class="loginInput">
+				<label>Wie ist dein Name?</label><br>
+				<input type="text" id="name" placeholder="dein Name" ><br>
+				<button id="loginBtn">Login</button>
+			</div>
+		</div>
+	</body>
+</html>
