@@ -5,6 +5,9 @@ var express = require('express'),
 	conf = require('./config.json'),
 	net = require("net");
 
+// Userliste
+var userlist = {};
+
 // Webserver
 // auf den Port x schalten
 server.listen(conf.port);
@@ -22,22 +25,54 @@ app.get('/', function (req, res) {
 
 // Websocket
 io.sockets.on('connection', function (socket) {
-	console.log("neue verbindung");
-
 	// der Client ist verbunden
-	socket.emit('chat', { zeit: new Date(), text: 'Du bist nun mit dem Server verbunden!' });
+	socket.emit('chat', {zeit:new Date(), text:'Du bist nun mit dem Server verbunden!'});
 
 	// wenn ein Benutzer einen Text senden
 	socket.on('chat', function (data) {
-		console.log("Incomming message");
-		console.log(data);
-
-		// so wird dieser Text an alle anderen Benutzer gesendet
-		io.sockets.emit('chat', { zeit: new Date(), name: data.name || 'Anonym', text: data.text });
+		if (typeof data.target != "undefined") {
+			if (typeof userlist[data.target] != "undefined") {
+				userlist[data.name].socket.emit("chat", {zeit:new Date(), name:data.name, text:data.text, whisper:1});
+				userlist[data.target].socket.emit("chat", {zeit:new Date(), name:data.name, text:data.text, whisper:1});
+			}
+		} else {
+			// so wird dieser Text an alle anderen Benutzer gesendet
+			io.sockets.emit('chat', {zeit:new Date(), name:data.name, text:data.text});
+		}
 	});
 
-	socket.on('data', function (data) {
-		console.log( data );
+	socket.on("status", function(data) {
+		if (data.status=="JOIN") {
+			io.sockets.emit('status', {zeit:new Date(), name:data.name, status:"JOINED"});
+			userlist[data.name] = {zeit:new Date(), name:data.name, socket:socket};
+
+			var users = [];
+			for (var key in userlist) {
+				users.push(key);
+			}
+			io.sockets.emit('status', {zeit:new Date(), name:data.name, status:"USERLIST", users:users});
+		}
+
+		if (userlist[data.name] != undefined) {
+			if (data.status=="PONG") {
+				userlist[data.name].zeit = new Date();
+			}
+		}
+	});
+
+	// Wenn ein benutzer den Chat verlässt
+	socket.on('disconnect', function (data) {
+		io.sockets.emit('status', {zeit: new Date(), status:'PING'});
+		setTimeout(function(){
+			var now = new Date();
+			for (var key in userlist) {
+				var userZeit = userlist[key].zeit;
+				if (userZeit.getTime() < (now.getTime()-conf.pongCheck)) {
+					io.sockets.emit("status", {zeit:new Date(), name:key, status:"LEFT"});
+					delete userlist[key];
+				}
+			}
+		}, conf.pongCheck);
 	});
 });
 
