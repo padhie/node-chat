@@ -3,10 +3,12 @@
 	<head>
 		<title>Node.js Chat</title>
 		<meta charset="utf-8">
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
 		<link rel="stylesheet" href="css/style.css" />
 		<link rel="stylesheet" href="css/color.css" />
 		<script src="socket.io/socket.io.js"></script>
 		<script src="js/jquery.min.js"></script>
+		<script src="js/jquery-ui.min.js"></script>
 		<script src="js/client.js"></script>
 		<script src="js/notification.js"></script>
 		<script src="js/color.js"></script>
@@ -20,6 +22,9 @@
 				$("#logoutBtn").on("click", function() {
 					logout();
 				});
+				$(document).on("click", "#userlist li, #content .whisper", function() {
+					openModal($(this).attr("data-name"));
+				});
 				$('#name').keypress(function (e) {
 					if (e.which == 13) {
 						login();
@@ -30,6 +35,7 @@
 					$("input#name").val( getCookie("username"));
 					login();
 				}
+				$(".loginInput").draggable();
 			});
 		</script>
 	</head>
@@ -46,9 +52,15 @@
 				<button id="logoutBtn">logout</button>
 			</div>
 		</header>
-		<ul id="content"></ul>
+		<div class="contentBox">
+			<ul id="content"></ul>
+		</div>
+		<div class="userlistBox">
+			<ul id="userlist"></ul>
+		</div>
 		<footer>
 			<div class="input">
+				<label id="whispertarget"></label>
 				<input id="text" type="text" placeholder="schreibe etwas..." />
 				<input id="senden" type="submit" class="btn" value="senden" />
 			</div>
