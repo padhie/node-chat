@@ -32,7 +32,7 @@ io.sockets.on('connection', function (socket) {
 	socket.on('chat', function (data) {
 		if (typeof data.target != "undefined") {
 			if (typeof userlist[data.target] != "undefined") {
-				userlist[data.name].socket.emit("chat", {zeit:new Date(), name:data.name, text:data.text, whisper:1});
+				userlist[data.name].socket.emit("chat", {zeit:new Date(), name:data.target, text:data.text, whisper:1});
 				userlist[data.target].socket.emit("chat", {zeit:new Date(), name:data.name, text:data.text, whisper:1});
 			}
 		} else {
