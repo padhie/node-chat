@@ -10,7 +10,7 @@ var userlist = {};
 
 // Webserver
 // auf den Port x schalten
-server.listen(conf.port);
+server.listen(conf.portChat);
 
 app.configure(function(){
 	// statische Dateien ausliefern
@@ -25,8 +25,11 @@ app.get('/', function (req, res) {
 
 // Websocket
 io.sockets.on('connection', function (socket) {
+	// IP From Client
+	var address = socket.request.connection.remoteAddress;
+
 	// der Client ist verbunden
-	socket.emit('chat', {zeit:new Date(), text:'Du bist nun mit dem Server verbunden!'});
+	socket.emit('chat', {zeit:new Date(), text:conf.loginMsg});
 
 	// wenn ein Benutzer einen Text senden
 	socket.on('chat', function (data) {
@@ -41,6 +44,7 @@ io.sockets.on('connection', function (socket) {
 		}
 	});
 
+	// wenn statusmeldungen rein kommen
 	socket.on("status", function(data) {
 		if (data.status=="JOIN") {
 			io.sockets.emit('status', {zeit:new Date(), name:data.name, status:"JOINED"});
@@ -76,5 +80,14 @@ io.sockets.on('connection', function (socket) {
 	});
 });
 
+// Connection from outsite
+var netServer = net.createServer(function (socket) {
+	socket.on('data', function(data) {
+		console.log('DATA ' + socket.remoteAddress + ': ' + data);
+		io.sockets.emit('chat', {zeit:new Date(), name:"OUTSITE", text:data.text});
+	});
+}).listen(conf.portOutsite, '127.0.0.1');
+
 // Portnummer in die Konsole schreiben
-console.log('Der Server läuft nun unter http://127.0.0.1:' + conf.port + '/');
+console.log('Chat is running on http://127.0.0.1:'+conf.portChat+'/');
+console.log('Data is running on http://127.0.0.1:'+conf.portOutsite+'/');
