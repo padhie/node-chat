@@ -6,6 +6,13 @@ $(document).ready(function() {
 	$(".collorBtn").on("click", function() {
 		changeColor($(this).attr("data-color"));
 	});
+
+	$("#fontColor").on("change", function() {
+		changeCustomColor("font", $("#fontColor").val());
+	});
+	$("#bodyColor").on("change", function() {
+		changeCustomColor("body", $("#bodyColor").val());
+	});
 });
 
 function changeColor(color) {
@@ -15,4 +22,15 @@ function changeColor(color) {
 			.addClass(color);
 		setCookie("color", color);
 	}
+}
+
+function changeCustomColor(type, color) {
+	if (type == "font")		var css = "color";
+	else					var css = "background-color";
+
+	$("body header").css(css, color);
+	$("body footer").css(css, color);
+	$("body .loginInput").css(css, color);
+
+	$("body header .collorBtn").css("color", "#fff");
 }
