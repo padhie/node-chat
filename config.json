@@ -1,4 +1,6 @@
 {
-	"port": 8081,
-  	"pongCheck": 10000
+	"portChat": 8081,
+	"portOutsite": 1337,
+	"pongCheck": 10000,
+	"loginMsg":"Du bist nun mit dem Server verbunden!"
 }
