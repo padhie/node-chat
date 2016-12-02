@@ -21,7 +21,8 @@ header .title{
 	font-weight: bold;
 	float: left;
 }
-header .color {
+header .color,
+header .customColor {
 	float: right;
 }
 header .color .collorBtn {
@@ -29,7 +30,11 @@ header .color .collorBtn {
 	width: 10px;
 	cursor: pointer;
 }
-
+header .customColor {
+	border-right: 1px solid black;
+	padding-right: 1em;
+	margin-right: 1em;
+}
 
 footer{
 	top: auto;
