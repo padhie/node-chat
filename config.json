@@ -1,6 +1,11 @@
 {
-	"portChat": 8081,
-	"portOutsite": 1337,
-	"pongCheck": 10000,
-	"loginMsg":"Du bist nun mit dem Server verbunden!"
+    "portChat": 8081,
+    "portOutsite": 1337,
+    "pongCheck": 10000,
+    "loginMsg": "Du bist nun mit dem Server verbunden!",
+    "useDB": true,
+    "dbHost": "localhost",
+    "dbDatabase": "node-chat",
+    "dbUser": "root",
+    "dbPassword": "root"
 }
