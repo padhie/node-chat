@@ -1,40 +1,46 @@
 function Userlist() {
     // Properties
+    var User = require('./Model/User');
     var userlist = {};
 
 
-    // Constuctor
-
-
     // Methods
-    this.newUser = function (user, socket) {
-        userlist[user] = {zeit: new Date(), name: user, socket: socket};
+    this.newUser = function (username, socket) {
+        userlist[username] = new User();
+        userlist[username].setName(username);
+        userlist[username].setSocket(socket);
+        userlist[username].setIp(socket.request.connection.remoteAddress);
+        userlist[username].setTime(new Date());
     };
-    this.removeUser = function (user) {
-        if (this.userExists(user)) {
-            delete userlist[user];
+    this.removeUser = function (username) {
+        if (this.userExists(username)) {
+            delete userlist[username];
         }
     };
-    this.sendToUser = function (user, message) {
-        userlist[user].socket.emit("chat", {zeit: new Date(), name: user, text: message, whisper: 1});
+    this.sendToUser = function (fromUsername, toUsername, message) {
+        var whisperService = requeire('./Service/Whisper');
+        whisperService.sendMessage(userlist[fromUsername], userlist[toUsername], message);
+        whisperService = null;
     };
-    this.userExists = function (user) {
-        return (typeof userlist[user] != 'undefined');
+    this.userExists = function (username) {
+        return (typeof userlist[username] != 'undefined');
     };
     this.getUserList = function () {
-        return userlist.keys();
+        return Object.keys(userlist);
     };
-    this.pong = function(user) {
-        if (this.userExists(user)) {
-            userlist[user].zeit = new Date();
+    this.pong = function(username) {
+        if (this.userExists(username)) {
+            userlist[username].setTime(new Date());
         }
     };
-    this.getPong = function(user) {
-        if (this.userExists(user)) {
-            return userlist[user].zeit
+    this.getPong = function(username) {
+        if (this.userExists(username)) {
+            return userlist[username].getTime();
         }
         return null;
+    };
+    this.getUser = function(username) {
+        return userlist[username];
     }
-
 }
 module.exports = Userlist;
