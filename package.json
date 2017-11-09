@@ -2,8 +2,9 @@
 	"name": "Node.js-Chat",
 	"description": "Ein einfacher Chat mit Node.js",
 	"author": "NodeCode.de",
-	"dependencies" : {
-		"express": "3.x",
-		"socket.io": "*"
+	"dependencies": {
+		"express": "^3.21.2",
+		"mysql": "^2.15.0",
+		"socket.io": "^2.0.4"
 	}
 }
